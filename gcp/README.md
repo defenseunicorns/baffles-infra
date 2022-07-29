@@ -6,6 +6,8 @@
   - [Usage](#usage)
     - [Quickstart](#quickstart)
     - [Variables](#variables)
+  - [Post Installation](#post-installation)
+  - [Teardown](#teardown)
 
 ## Prerequisites
 ### Download `k3sup`
@@ -38,8 +40,12 @@ $ terraform apply -var-file=your.tfvars -auto-approve
 ```
 
 ### Variables
+
+Note: It is recommended to give a unique name to the cluster you're creating to avoid collision with a different deployment.
+
 | Variable | Required | Type | Default Value |
 |--|--|--|--|
+| name | No | String| terraform |
 | project| Yes | String | |
 | credentials_file | Yes | String | |
 | service_account | Yes | String | |
@@ -48,7 +54,7 @@ $ terraform apply -var-file=your.tfvars -auto-approve
 | zone | No | String| us-central1-b |
 | agent_nodes | No | Integer | 1 |
 
-### Post Installation
+## Post Installation
 
 After Terraform finishes creating the cluster, `k3sup` fetches the `kubeconfig` file to the current working directory.
 
@@ -58,4 +64,9 @@ NAME               STATUS   ROLES                  AGE     VERSION
 k3s-controlplane   Ready    control-plane,master   4m21s   v1.24.3+k3s1
 k3s-agent-1        Ready    <none>                 28s     v1.24.3+k3s1
 k3s-agent-0        Ready    <none>                 54s     v1.24.3+k3s1
+```
+## Teardown
+
+```sh
+$ terraform destroy -var-file=your.tfvars -auto-approve
 ```

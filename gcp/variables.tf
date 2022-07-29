@@ -22,7 +22,7 @@ variable "os_family" {
   default = "redhat"
 }
 
-variable "agent_nums" {
+variable "agent_nodes" {
   default = 1
 }
 
