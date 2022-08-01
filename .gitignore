@@ -1,0 +1,4 @@
+rmengert.tfvars
+.terraform*
+terraform.tfstate*
+kubeconfig

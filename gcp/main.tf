@@ -44,8 +44,9 @@ resource "google_compute_instance" "k3s_controlplane_instance" {
             --context k3s \
             --ssh-key ~/.ssh/google_compute_engine \
             --user $(whoami) \
-            --k3s-extra-args '--no-deploy -traefik'
+            --k3s-extra-args '--service-node-port-range=30000-32767'
         EOT
+  
   }
 
   depends_on = [
