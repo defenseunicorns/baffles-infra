@@ -11,6 +11,16 @@ resource "google_compute_subnetwork" "baffles_k3s_subnetwork" {
   ip_cidr_range = "192.168.1.0/24"
 }
 
+resource "google_compute_firewall" "k3s_internal" {
+  name    = "baffles-${var.name}-k3s-allow-internal"
+  network = google_compute_network.baffles_k3s_network.name
+  allow {
+    protocol = "all"
+  }
+  source_tags = ["k3s"]
+  target_tags = ["k3s"]
+}
+
 resource "google_compute_firewall" "baffles_k3s_firewall" {
   name    = "baffles-${var.name}-k3s-firewall"
   network = google_compute_network.baffles_k3s_network.name
