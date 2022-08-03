@@ -21,17 +21,7 @@ resource "google_compute_firewall" "baffles_k3s_firewall" {
 
   allow {
     protocol = "tcp"
-    ports    = ["22"]
-  }
-
-  allow {
-    protocol = "tcp"
-    ports    = ["6443"]
-  }
-
-  allow {
-    protocol = "tcp"
-    ports = ["30000-32767"]
+    ports    = ["22", "6443", "30000-32767"]
   }
 
   target_tags   = ["k3s"]

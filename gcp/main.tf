@@ -5,7 +5,7 @@ resource "google_compute_instance" "k3s_controlplane_instance" {
 
   boot_disk {
     initialize_params {
-      image = "rocky-linux-cloud/rocky-linux-8-optimized-gcp"
+      image = "baffles-debian11"
     }
   }
 
@@ -25,16 +25,20 @@ resource "google_compute_instance" "k3s_controlplane_instance" {
     scopes = ["cloud-platform"]
   }
 
-  # Dummy provisioner to ensure that ssh connection actually works
+  connection {
+    type        = "ssh"
+    user        = var.ssh_user
+    private_key = file(pathexpand("~/.ssh/google_compute_engine"))
+    host        = self.network_interface[0].access_config[0].nat_ip
+  }
+
+  provisioner "file" {
+    source      = "files/usr.sbin.libvirtd"
+    destination = "/tmp/usr.sbin.libvirtd"
+  }
+
   provisioner "remote-exec" {
     script = "scripts/setup.sh"
-
-    connection {
-      type        = "ssh"
-      user        = var.ssh_user
-      private_key = file(pathexpand("~/.ssh/google_compute_engine"))
-      host        = self.network_interface[0].access_config[0].nat_ip
-    }
   }
 
   provisioner "local-exec" {
@@ -46,7 +50,6 @@ resource "google_compute_instance" "k3s_controlplane_instance" {
             --user $(whoami) \
             --k3s-extra-args '--service-node-port-range=30000-32767'
         EOT
-  
   }
 
   depends_on = [
@@ -62,7 +65,7 @@ resource "google_compute_instance" "k3s_agent_instance" {
 
   boot_disk {
     initialize_params {
-      image = "rocky-linux-cloud/rocky-linux-8-optimized-gcp"
+      image = "baffles-debian11"
     }
   }
 
@@ -76,16 +79,20 @@ resource "google_compute_instance" "k3s_agent_instance" {
     enable_nested_virtualization = true
   }
 
-  # Dummy provisioner to ensure that ssh connection actually works
+  connection {
+    type        = "ssh"
+    user        = var.ssh_user
+    private_key = file(pathexpand("~/.ssh/google_compute_engine"))
+    host        = self.network_interface[0].access_config[0].nat_ip
+  }
+
+  provisioner "file" {
+    source      = "files/usr.sbin.libvirtd"
+    destination = "/tmp/usr.sbin.libvirtd"
+  }
+
   provisioner "remote-exec" {
     script = "scripts/setup.sh"
-
-    connection {
-      type        = "ssh"
-      user        = var.ssh_user
-      private_key = file(pathexpand("~/.ssh/google_compute_engine"))
-      host        = self.network_interface[0].access_config[0].nat_ip
-    }
   }
 
   provisioner "local-exec" {
