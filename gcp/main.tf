@@ -1,3 +1,8 @@
+resource "google_compute_disk" "control_plane_disk" {
+  name = "control-plane-disk"
+  size = var.disk_size
+}
+
 resource "google_compute_instance" "k3s_controlplane_instance" {
   name         = "baffles-${var.name}-k3s-controlplane"
   machine_type = "n1-standard-1"
@@ -7,6 +12,10 @@ resource "google_compute_instance" "k3s_controlplane_instance" {
     initialize_params {
       image = "baffles-debian11"
     }
+  }
+
+  attached_disk {
+    source = "${google_compute_disk.control_plane_disk.name}"
   }
 
   network_interface {
@@ -57,6 +66,12 @@ resource "google_compute_instance" "k3s_controlplane_instance" {
   ]
 }
 
+resource "google_compute_disk" "agent_disk" {
+  count = var.agent_nodes
+  name = "agent-disk-${count.index}"
+  size = var.disk_size
+}
+
 resource "google_compute_instance" "k3s_agent_instance" {
   count        = var.agent_nodes
   name         = "baffles-${var.name}-k3s-agent-${count.index}"
@@ -67,6 +82,11 @@ resource "google_compute_instance" "k3s_agent_instance" {
     initialize_params {
       image = "baffles-debian11"
     }
+  }
+
+  attached_disk {
+    source = "${element(google_compute_disk.agent_disk.*.self_link, count.index)}"
+    device_name = "${element(google_compute_disk.agent_disk.*.name, count.index)}"
   }
 
   network_interface {

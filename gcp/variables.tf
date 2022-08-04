@@ -29,3 +29,9 @@ variable "agent_nodes" {
 variable "ssh_user" {
   default = ""
 }
+
+variable "disk_size" {
+  default = "70"
+  description = "Size of the attached disk on the GCP instances."
+  
+}
