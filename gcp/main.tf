@@ -1,5 +1,5 @@
 resource "google_compute_disk" "control_plane_disk" {
-  name = "control-plane-disk"
+  name = "baffles-${var.name}-control-plane-disk"
   size = var.disk_size
 }
 
@@ -68,7 +68,7 @@ resource "google_compute_instance" "k3s_controlplane_instance" {
 
 resource "google_compute_disk" "agent_disk" {
   count = var.agent_nodes
-  name = "agent-disk-${count.index}"
+  name = "baffles-${var.name}-agent-disk-${count.index}"
   size = var.disk_size
 }
 
