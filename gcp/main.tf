@@ -107,12 +107,12 @@ resource "google_compute_instance" "k3s_agent_instance" {
   }
 
   provisioner "file" {
-    source      = "files/usr.sbin.libvirtd"
+    source      = "${path.module}/files/usr.sbin.libvirtd"
     destination = "/tmp/usr.sbin.libvirtd"
   }
 
   provisioner "remote-exec" {
-    script = "scripts/setup.sh"
+    script = "${path.module}/scripts/setup.sh"
   }
 
   provisioner "local-exec" {
