@@ -43,16 +43,16 @@ $ terraform apply -var-file=your.tfvars -auto-approve
 
 Note: It is recommended to give a unique name to the cluster you're creating to avoid collision with a different deployment.
 
-| Variable | Required | Type | Default Value |
-|--|--|--|--|
-| name | No | String| terraform |
-| project| Yes | String | |
-| credentials_file | Yes | String | |
-| service_account | Yes | String | |
-| ssh_user | Yes | String | |
-| region | No | String | us-central1 |
-| zone | No | String| us-central1-b |
-| agent_nodes | No | Integer | 1 |
+| Variable | Required | Type | Default Value |  
+|--|--|--|--|  
+| name | No | String| terraform |  
+| project | Yes | String | |  
+| credentials_file | Yes | String | |  
+| service_account | Yes | String | |  
+| ssh_user | Yes | String | |  
+| region | No | String | us-central1 |  
+| zone | No | String| us-central1-b |  
+| agent_nodes | No | Integer | 1 |  
 
 ## Post Installation
 

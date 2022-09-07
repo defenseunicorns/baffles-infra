@@ -2,3 +2,5 @@ rmengert.tfvars
 .terraform*
 terraform.tfstate*
 kubeconfig
+.idea
+credentials.json

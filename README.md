@@ -1,2 +1,7 @@
 # baffles-infra
-A repository containing scripts to bootstrap Kubernetes with Baffles on various cloud and on-prem providers.
+
+A utility repository containing code for provisioning infrastructure for the Baffles project.
+
+## Contributing
+
+Contributions are welcome! Please see the [Contributing Guide](CONTRIBUTING.md) for more information.
