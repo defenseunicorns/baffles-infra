@@ -1,16 +1,7 @@
-provider "aws" {
-  region = var.region
-}
-
 data "aws_availability_zones" "available" {}
 
 locals {
   cluster_name = "baffles-eks"
-}
-
-resource "random_string" "suffix" {
-  length  = 8
-  special = false
 }
 
 module "vpc" {
@@ -22,8 +13,8 @@ module "vpc" {
   cidr = "10.0.0.0/16"
   azs  = slice(data.aws_availability_zones.available.names, 0, 3)
 
-  private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
-  public_subnets  = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
+  private_subnets = ["10.0.1.0/24"]
+  public_subnets  = ["10.0.2.0/24"]
 
   enable_nat_gateway   = true
   single_nat_gateway   = true
@@ -53,28 +44,37 @@ module "eks" {
 
   eks_managed_node_group_defaults = {
     ami_type = "AL2_x86_64"
-
   }
 
   eks_managed_node_groups = {
-    one = {
-      name = "node-group-1"
+    control-plane = {
+      name = "control"
 
       instance_types = ["t3.small"]
 
       min_size     = 1
-      max_size     = 3
-      desired_size = 2
+      max_size     = 1
+      desired_size = 1
     }
 
-    two = {
-      name = "node-group-2"
+    gen_workers = {
+      name = "workers"
 
       instance_types = ["t3.small"]
 
       min_size     = 1
       max_size     = 2
-      desired_size = 1
+      desired_size = 2
+    }
+
+    bare_metal = {
+      name = "bare_metal"
+
+      instance_types = [""]
+
+      min_size     = 1
+      max_size     = 2
+      desired_size = 2
     }
   }
 }
